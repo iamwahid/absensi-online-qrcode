@@ -1,15 +1,15 @@
 body {
-  background-color: rgb(146, 212, 172) !important;
+  background-color: rgb(146, 175, 212) !important;
 }
 
 .bg-theme {
-  background-color: #3d976d !important;
+  background-color: #1a98be !important;
 }
 
 .card-header {
   // padding: 0.75rem 1.25rem;
   // margin-bottom: 0;
-  background-color: rgba(3, 153, 116, 0.281) !important;
+  background-color: rgba(3, 98, 153, 0.281) !important;
   border-bottom: 1px solid rgba(0, 0, 0, 0.125) !important;
 }
 
@@ -18,23 +18,23 @@ body {
   // flex-direction: column;
   // padding: 0;
   color: #fff;
-  // background: #1b553a !important;
-  background: url('../img/backend/bg.jpg') !important;
+  background: #1b4e55 !important;
+  // background: url('../img/backend/bg.jpg') !important;
 }
 
 .sidebar .nav-link.active {
   color: #fff;
-  background: #01301a63 !important;
+  background: #01293063 !important;
   // background: url('../img/backend/bg.jpg') !important;
 }
 
 .app-header {
-  background-color: #aaf7d3 !important;
+  background-color: #1a98be !important;
   // background: url('../img/backend/bg.jpg') !important;
-  border-bottom: 1px solid #8becbf !important;
+  border-bottom: 1px solid #017699 !important;
 }
 
 .breadcrumb {
-  background-color: #8becbf !important;
-  border-bottom: 1px solid #8becbf !important;
+  background-color: #017699 !important;
+  border-bottom: 1px solid #017699!important;
 }

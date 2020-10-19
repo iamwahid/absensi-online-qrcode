@@ -45,3 +45,7 @@ If you would like to help the continued efforts of this project, any size [donat
 ### License
 
 MIT: [http://anthony.mit-license.org](http://anthony.mit-license.org)
+
+C:\xampp2\php\php.exe "D:\Belajar\PWEB\Cross-platform\absensi\artisan" schedule:run
+
+schtasks /create /tn "Laravel Scheduler" /sc minute /mo 1 /tr "D:\Belajar\PWEB\Cross-platform\absensi\schedule.cmd"

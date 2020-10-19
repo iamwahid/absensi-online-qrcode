@@ -47,16 +47,33 @@ if (! function_exists('barcode_class')) {
         return new class($code, $type, $col, $row){
             public $png;
             public $html;
+            public $plain;
 
             function __construct($code, $type, $col, $row)
             {
                 $this->png = "data:image/png;base64,".DNS2D::getBarcodePNG($code, $type ,$col, $row);
                 $this->html = "<img src='" . $this->png . "' alt='barcode'/>";
+                $this->plain = $code;
             }
             function __toString()
             {
                 return $this->png;
             }
         };;
+    }
+}
+
+if (! function_exists('dayname')) {
+    function dayname(int $day) {
+        $days = [
+            0 => 'Minggu',
+            1 => 'Senin',
+            2 => 'Selasa',
+            3 => 'Rabu',
+            4 => 'Kamis',
+            5 => 'Jum\'at',
+            6 => 'Sabtu',
+        ];
+        return $days[$day] ?? '';
     }
 }

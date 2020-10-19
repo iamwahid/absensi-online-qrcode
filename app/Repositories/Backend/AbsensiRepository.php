@@ -22,7 +22,7 @@ class AbsensiRepository extends BaseRepository
         return Absensi::class;
     }
 
-    public function getPresenceOnDate($jadwal_id, $mhs_tahun = '', $date = '')
+    public function getPresenceOnDate($jadwal_id, $date = '', $mhs_tahun = '')
     {
         $date = $date ?: now()->toDateString();
         $absens = DB::select("SELECT absensi.id, absensi.keterangan, absensi.created_at,
@@ -31,10 +31,11 @@ class AbsensiRepository extends BaseRepository
                 matkuls.nama, 
                 jadwals.start_at, jadwals.finish_at
                 FROM (SELECT * FROM absensi WHERE created_at BETWEEN '$date 00:00:00' AND '$date 23:59:00') AS absensi 
-                RIGHT JOIN mahasiswas ON mahasiswas.id = absensi.mahasiswa_id
-                RIGHT JOIN users ON users.id = mahasiswas.user_id
-                RIGHT JOIN jadwals ON absensi.jadwal_id = jadwals.id
-                RIGHT JOIN matkuls ON jadwals.matkul_id = matkuls.id
+                RIGHT OUTER JOIN mahasiswas ON mahasiswas.id = absensi.mahasiswa_id
+                LEFT JOIN users ON users.id = mahasiswas.user_id
+                LEFT JOIN mahasiswa_has_jadwals ON mahasiswas.id = mahasiswa_has_jadwals.mahasiswa_id
+                LEFT JOIN jadwals ON mahasiswa_has_jadwals.jadwal_id = jadwals.id
+                LEFT JOIN matkuls ON jadwals.matkul_id = matkuls.id
                 WHERE jadwals.id = $jadwal_id AND mahasiswas.tahun LIKE '%$mhs_tahun%'
                 ORDER BY mahasiswa_id
                 ");
@@ -59,26 +60,21 @@ class AbsensiRepository extends BaseRepository
         return $absens;
     }
 
-    public function setPresenceToday(Jadwal $jadwal, Mahasiswa $mahasiswa, $kode)
+    public function setPresenceOnDate(Jadwal $jadwal, Mahasiswa $mahasiswa, $keterangan, $kode, $date = '')
     {
         if (!$jadwal->mahasiswas->contains('id', $mahasiswa->id)) return;
         if ($jadwal->kode_absen != $kode) return;
-
-        $today = Carbon::today();
         
-        if ($jadwal->day != $today->formatLocalized('%w')) return;// %A %a for day name
-        $jadwaltime = [Carbon::createFromFormat("H:i", $jadwal->start_time), Carbon::createFromFormat("H:i", $jadwal->finish_time)];
-        $now = Carbon::now();
-        if ($jadwaltime[0] < $now && $jadwaltime[1] > $now) {
+        $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : Carbon::now();
+        
+        if ($jadwal->isAvailable($date)) {
             $keterangan = 'hadir';
         } else $keterangan = '';
 
-        $absen = $this->model->whereDate('created_at', $today)
+        $absen = $this->model->whereDate('created_at', $date)
         ->where('mahasiswa_id', '=', $mahasiswa->id)
         ->where('jadwal_id', '=', $jadwal->id)
         ->get()->first();
-
-        // return $keterangan;
 
         if ($absen) {
             $absen->update(['keterangan' => $keterangan]);
@@ -91,24 +87,5 @@ class AbsensiRepository extends BaseRepository
         }
 
         return $absen;
-    }
-
-    public function setPresenceOnDate(Mahasiswa $mahasiswa, $keterangan, $date)
-    {
-        // $date = Carbon::createFromFormat('Y-m-d', $date);
-        // $today = $this->model->whereDate('created_at', $date)
-        // ->where('mahasiswa_id', '=', $mahasiswa->id)
-        // ->get()->first();
-        // // override keterangan
-        // if ($today) {
-        //     $today->update(['keterangan' => $keterangan]);
-        // } else {
-        //     $today = $this->model->insert([
-        //         'mahasiswa_id' => $mahasiswa->id,
-        //         'keterangan' => $keterangan,
-        //         'created_at' => $date
-        //     ]);
-        // }
-        // return $today;
     }
 }

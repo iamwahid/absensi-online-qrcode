@@ -16,8 +16,8 @@
                     <div class="row">
                         <div class="col">
                             <div class="form-group clearfix">
-                                <a href="{{route('frontend.auth.login').'?as=mhs'}}" class="btn btn-sm btn-primary">Login Mahasiswa</a>
-                                <a href="{{route('frontend.auth.login')}}" class="btn btn-sm btn-secondary disabled">Login Admin/Dosen</a>
+                                <a href="{{route('frontend.auth.login').'?as=mhs'}}" class="btn btn-sm btn-secondary disabled">Login Mahasiswa</a>
+                                <a href="{{route('frontend.auth.login')}}" class="btn btn-sm btn-primary">Login Admin/Dosen</a>
                             </div>
                         </div>
                     </div>
@@ -25,11 +25,11 @@
                         <div class="row">
                             <div class="col">
                                 <div class="form-group">
-                                    {{ html()->label(__('validation.attributes.frontend.email'))->for('email') }}
+                                    {{ html()->label('NIM')->for('email') }}
 
-                                    {{ html()->email('email')
+                                    {{ html()->text('nim')
                                         ->class('form-control')
-                                        ->placeholder(__('validation.attributes.frontend.email'))
+                                        ->placeholder('NIM')
                                         ->attribute('maxlength', 191)
                                         ->required() }}
                                 </div><!--form-group-->
@@ -76,13 +76,6 @@
                         </div><!--row--> --}}
                     {{ html()->form()->close() }}
 
-                    <div class="row">
-                        <div class="col">
-                            <div class="text-center">
-                                {!! $socialiteLinks !!}
-                            </div>
-                        </div><!--col-->
-                    </div><!--row-->
                 </div><!--card body-->
             </div><!--card-->
         </div><!-- col-md-8 -->

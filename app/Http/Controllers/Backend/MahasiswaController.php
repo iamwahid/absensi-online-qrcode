@@ -46,7 +46,8 @@ class MahasiswaController extends Controller
         $duser['last_name'] = explode(' ', $duser['name'])[1] ?? '';
         unset($duser['name']);
         $duser['roles'] = [config('access.users.default_role')];
-
+        $duser['active'] = "1";
+        $duser['confirmed'] = "1";
         $dmhs = $request->validate([
             'nim' => ['string'],
             'tahun' => ['string'],

@@ -16,7 +16,7 @@ class ManageDosenRequest extends FormRequest
      */
     public function authorize()
     {
-        return $this->user()->hasRole('executive');
+        return $this->user()->hasRole(config('access.users.executive_role'));
     }
 
     /**

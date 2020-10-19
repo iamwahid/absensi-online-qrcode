@@ -15,11 +15,13 @@ use App\Http\Controllers\Frontend\User\DashboardController;
 // Route::get('contact', [ContactController::class, 'index'])->name('contact');
 // Route::post('contact/send', [ContactController::class, 'send'])->name('contact.send');
 
+Route::get('/qrcode/{code}', function ($code) {
+    return barcode_class($code)->html;
+})->name('genqr');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
-    Route::get('materi/', [MateriController::class, 'index'])->name('materi.index');
-    Route::get('materi/kurikulum', [MateriController::class, 'kurikulum'])->name('materi.kurikulum');
-    Route::get('materi/{key}', [MateriController::class, 'show'])->name('materi.show');
+    Route::get('/scan', [DashboardController::class, 'scanAbsen'])->name('scan');
+    Route::post('/scan', [DashboardController::class, 'scanAbsen'])->name('scan');
 
     Route::get('absensi', [AbsensiController::class, 'index'])->name('absensi.index');
     // rating
@@ -37,6 +39,7 @@ Route::group(['middleware' => ['auth', 'password_expires']], function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
         
 
+        
         // User Account Specific
         Route::get('account', [AccountController::class, 'index'])->name('account');
 

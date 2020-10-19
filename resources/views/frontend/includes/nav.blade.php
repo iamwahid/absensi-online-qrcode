@@ -7,20 +7,10 @@
 
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
         <ul class="navbar-nav">
-            {{-- @if(config('locale.status') && count(config('locale.languages')) > 1)
-                <li class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownLanguageLink" data-toggle="dropdown"
-                       aria-haspopup="true" aria-expanded="false">@lang('menus.language-picker.language') ({{ strtoupper(app()->getLocale()) }})</a>
-
-                    @include('includes.partials.lang')
-                </li>
-            @endif --}}
 
             @auth
-                {{-- <li class="nav-item"><a href="{{route('frontend.user.dashboard')}}" class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}">@lang('navs.frontend.dashboard')</a></li> --}}
-                <li class="nav-item"><a href="{{route('frontend.absensi.index')}}" class="nav-link {{ active_class(Active::checkRoute('frontend.absensi.index')) }}">Absensi Santri</a></li>
-                <li class="nav-item"><a href="{{route('frontend.materi.index')}}" class="nav-link {{ active_class(Active::checkRoute('frontend.materi.index')) }}">Materi</a></li>
-                <li class="nav-item"><a href="{{route('frontend.materi.kurikulum')}}" class="nav-link {{ active_class(Active::checkRoute('frontend.materi.kurikulum')) }}">Kurikulum</a></li>
+                <li class="nav-item"><a href="{{route('frontend.user.dashboard')}}" class="nav-link {{ active_class(Active::checkRoute('frontend.user.dashboard')) }}">@lang('navs.frontend.dashboard')</a></li>
+                {{-- <li class="nav-item"><a href="{{route('frontend.absensi.index')}}" class="nav-link {{ active_class(Active::checkRoute('frontend.absensi.index')) }}">Absensi Santri</a></li> --}}
                 {{-- @can('view backend')
                 @endcan --}}
             @endauth
@@ -43,7 +33,7 @@
 
                         <a href="{{ route('frontend.user.account') }}" class="dropdown-item {{ active_class(Active::checkRoute('frontend.user.account')) }}">@lang('navs.frontend.user.account')</a>
                         <a href="{{ route('frontend.auth.logout') }}" class="dropdown-item">@lang('navs.general.logout')</a>
-                        <a href="{{ route('frontend.rating.form') }}" class="dropdown-item">Beri Penilaian</a>
+                        {{-- <a href="{{ route('frontend.rating.form') }}" class="dropdown-item">Beri Penilaian</a> --}}
                     </div>
                 </li>
             @endguest

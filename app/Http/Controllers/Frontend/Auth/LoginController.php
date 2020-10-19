@@ -9,6 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Helpers\Auth\SocialiteHelper;
 use App\Events\Frontend\Auth\UserLoggedIn;
 use App\Events\Frontend\Auth\UserLoggedOut;
+use App\Models\Mahasiswa;
+use Auth;
+use Hash;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use LangleyFoxall\LaravelNISTPasswordRules\PasswordRules;
 
@@ -34,6 +37,7 @@ class LoginController extends Controller
      */
     public function showLoginForm()
     {
+        if (request()->as && request()->as == 'mhs')  return view('frontend.auth.login_mahasiswa');
         return view('frontend.auth.login')
             ->withSocialiteLinks((new SocialiteHelper)->getSocialLinks());
     }
@@ -48,6 +52,24 @@ class LoginController extends Controller
         return config('access.users.username');
     }
 
+    protected function attemptLogin(Request $request)
+    {
+       $cred = $this->validateLogin($request);
+       if (isset($cred[$this->username()])) {
+           return $this->guard()->attempt($this->credentials($request), $request->filled('remember'));
+       }
+       if (isset($cred['nim'])) {
+           $mhs = Mahasiswa::where('nim', '=', $cred['nim'])->first();
+           if ($mhs && $user = $mhs->user) {
+               if (Hash::check($cred['password'], $user->password)) {
+                   Auth::login($user, $request->filled('remember'));
+                   return true;
+               }
+            }
+            return false;
+       }
+    }
+
     /**
      * Validate the user login request.
      *
@@ -58,8 +80,9 @@ class LoginController extends Controller
      */
     protected function validateLogin(Request $request)
     {
-        $request->validate([
-            $this->username() => 'required|string',
+        return $request->validate([
+            $this->username() => 'required_if:as,null|string',
+            'nim' => 'required_if:as,mhs|string',
             'password' => PasswordRules::login(),
         ]);
     }

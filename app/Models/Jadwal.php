@@ -51,17 +51,24 @@ class Jadwal extends Model
         return explode(' ', $this->attributes['start_at'])[0];
     }
 
+    public function getDaynameAttribute()
+    {
+        return dayname($this->day);
+    }
+
     public function getActionsAttribute()
     {
         $show = route('admin.jadwal.show', $this->id);
         $edit = route('admin.jadwal.edit', $this->id);
         $delete = route('admin.jadwal.delete', $this->id);
         $mahasiswa = route('admin.jadwal.mahasiswa', $this->id);
+        $genqr = route('frontend.genqr', $this->qr_code->plain);
         $html = '';
         $html = '<div class="btn-group">'.
         '<a href="'.$mahasiswa.'" class="btn btn-sm btn-primary">Atur Mahasiswa</a>'.
         '<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"></button>'.
         '<ul class="dropdown-menu" role="menu">'.
+        '<a href="'.$genqr.'" target="_blank" class="dropdown-item">QR link</a>'.
         '<a href="'.$edit.'" class="dropdown-item">Edit</a>'.
         '<button type="button" onclick="deleteItem(\''.$delete.'\')" class="dropdown-item">Delete</button>'.
         '</ul></div>';
@@ -69,10 +76,21 @@ class Jadwal extends Model
         return $html;
     }
 
+    public function isAvailable(\Carbon\Carbon $date = null) : bool
+    {
+        $date = $date ? $date : \Carbon\Carbon::now();
+        if ($this->day != $date->formatLocalized('%w')) return false;// %A %a for day name
+        $jadwaltime = [\Carbon\Carbon::createFromFormat("H:i", $this->start_time), \Carbon\Carbon::createFromFormat("H:i", $this->finish_time)];
+        if (!($jadwaltime[0] < $date && $jadwaltime[1] > $date)) return false;
+        return true;
+    }
+
     public function generateKode()
     {
-        $this->attributes['kode_absen'] = \Str::random(10);
-        $this->save();
+        if ($this->isAvailable()) {
+            $this->attributes['kode_absen'] = \Str::random(10);
+            $this->save();
+        }
     }
 
     public function getStrigableAttribute()
@@ -83,6 +101,7 @@ class Jadwal extends Model
 
     public function getQrCodeAttribute()
     {
-        return barcode_class($this->attributes['kode_absen'], 'QRCODE', 5, 5);
+        $string_code = base64_encode($this->id .'_'. $this->matkul_id .'_'. $this->kode_absen);
+        return barcode_class($string_code, 'QRCODE', 5, 5);
     }
 }

@@ -63,7 +63,36 @@
                                         </div><!--card-header-->
 
                                         <div class="card-body">
-                                            Halaman wali santri
+                                            @if ($logged_in_user->mahasiswa && $logged_in_user->mahasiswa->jadwals)
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Jadwal</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($logged_in_user->mahasiswa->jadwals as $i => $jadwal)
+                                                        <tr>
+                                                            <td>{{$i+1}}</td>
+                                                            <td>
+                                                                <p>Matkul : {{$jadwal->matkul->nama}}</p>
+                                                                <p>Dosen : {{$jadwal->dosen->user->name}}</p>
+                                                                <p>Waktu : {{$jadwal->start_time .' - '. $jadwal->finish_time}}</p>
+                                                            </td>
+                                                            <td>
+                                                                <a href="{{route('frontend.scan')}}" class="btn btn-success">Absen</a>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            @else
+                                            <strong>Jadwal belum ditentukan</strong>
+                                            @endif
                                         </div><!--card-body-->
                                     </div><!--card-->
                                 </div><!--col-md-6-->
