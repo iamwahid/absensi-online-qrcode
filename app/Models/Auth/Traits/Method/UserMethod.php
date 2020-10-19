@@ -76,6 +76,11 @@ trait UserMethod
         return $this->hasRole(config('access.users.admin_role'));
     }
 
+    public function isDosen()
+    {
+        return $this->hasRole(config('access.users.executive_role')) && $this->dosen;
+    }
+
     /**
      * @return bool
      */

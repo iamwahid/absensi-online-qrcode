@@ -73,6 +73,10 @@ class Jadwal extends Model
         '<button type="button" onclick="deleteItem(\''.$delete.'\')" class="dropdown-item">Delete</button>'.
         '</ul></div>';
 
+        if (!auth()->user()->isAdmin()) {
+            $html = '<a href="'.$genqr.'" target="_blank" class="btn btn-sm btn-primary">QR Link</a>';
+        }
+
         return $html;
     }
 

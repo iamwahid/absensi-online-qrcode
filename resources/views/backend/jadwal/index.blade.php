@@ -41,7 +41,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                          @foreach ($jadwal as $k => $b)
+                          @foreach ($jadwals as $k => $b)
                           <tr>
                             <td>
                                 <strong>{{$k+1 .'. '.$b->dayname.' '.$b->start_time.' - '. $b->finish_time}} </strong>

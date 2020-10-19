@@ -13,6 +13,7 @@
                 </a>
             </li>
 
+            @if ($logged_in_user->isAdmin())
             {{-- mahasiswa --}}
             <li class="nav-item nav-dropdown {{
                 active_class(Active::checkUriPattern('admin/mahasiswa*'), 'open')
@@ -102,6 +103,7 @@
                     @endif
                 </ul>
             </li>
+            @endif
 
             {{-- jadwal --}}
             <li class="nav-item nav-dropdown {{

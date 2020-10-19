@@ -28,8 +28,17 @@ class JadwalController extends Controller
 
     public function index()
     {
-        $jadwals = $this->jadwals->get();
-        return view('backend.jadwal.index', ['jadwal' => $jadwals]);
+        $user = auth()->user();
+        $jadwals = [];
+        if ($user->isAdmin()) {
+            $jadwals = $this->jadwals->get();
+        } else {
+            if ($user->isDosen()) {
+                $jadwals = $user->dosen->jadwals;
+            }
+        }
+
+        return view('backend.jadwal.index', compact(['jadwals']));
     }
 
     public function create()
