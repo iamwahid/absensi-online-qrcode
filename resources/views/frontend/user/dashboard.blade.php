@@ -67,7 +67,7 @@
                                                         <tr>
                                                             <th>#</th>
                                                             <th>Jadwal</th>
-                                                            <th>Action</th>
+                                                            <th>Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -89,7 +89,11 @@
                                                                 <p>Waktu : {{$jadwal->dayname.', '.$jadwal->start_time .' - '. $jadwal->finish_time}}</p>
                                                             </td>
                                                             <td>
+                                                                @if ($jadwal->hasMhsAbsensi($logged_in_user->mahasiswa->id))
+                                                                Sudah Absen
+                                                                @else
                                                                 <a href="{{route('frontend.scan')}}" class="btn btn-success">Absen</a>
+                                                                @endif
                                                             </td>
                                                         </tr>
                                                         @endforeach

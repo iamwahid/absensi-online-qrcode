@@ -36,6 +36,11 @@ class Jadwal extends Model
         return $this->hasMany(Absensi::class, 'jadwal_id');
     }
 
+    public function hasMhsAbsensi($mahasiswa_id)
+    {
+        return $this->absensi()->where('mahasiswa_id', '=', $mahasiswa_id)->first();
+    }
+
     public function getStartTimeAttribute()
     {
         return explode(' ', $this->attributes['start_at'])[1]; 
