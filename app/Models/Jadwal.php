@@ -66,11 +66,11 @@ class Jadwal extends Model
         $genqr = route('frontend.genqr', $this->qr_code->plain);
         $html = '';
         $html = '<div class="btn-group">'.
-        '<a href="'.$mahasiswa.'" class="btn btn-sm btn-primary">Atur Mahasiswa</a>'.
+        '<a href="'.$absensi.'" class="btn btn-sm btn-primary">Absensi</a>'.
         '<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"></button>'.
         '<ul class="dropdown-menu" role="menu">'.
         '<a href="'.$genqr.'" target="_blank" class="dropdown-item">QR link</a>'.
-        '<a href="'.$absensi.'" class="dropdown-item">Absensi</a>'.
+        '<a href="'.$mahasiswa.'" class="dropdown-item">Atur Mahasiswa</a>'.
         '<a href="'.$edit.'" class="dropdown-item">Edit</a>'.
         '<button type="button" onclick="deleteItem(\''.$delete.'\')" class="dropdown-item">Delete</button>'.
         '</ul></div>';
