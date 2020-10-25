@@ -72,9 +72,16 @@
                     </div>
                     <div class="col">
                         <div class="form-group">
-                            {{ html()->label("Tahun Angkatan")->class('form-control-label')->for('tahun') }}
-                            {{ html()->text('tahun')
-                                ->class('form-control')
+                            {{ html()->label("Kelas")->class('form-control-label')->for('kelas') }}
+                            {{ html()->select('kelas')
+                                ->options([
+                                    'A' => 'Kelas A',
+                                    'B' => 'Kelas B',
+                                    'C' => 'Kelas C',
+                                    'D' => 'Kelas D',
+                                    'E' => 'Kelas E',
+                                ])
+                                ->class('form-control')->required()
                                 }}
                         </div><!--form-group-->
                     </div>
@@ -89,8 +96,7 @@
                                 ->options([
                                     'male' => 'Laki-Laki',
                                     'female' => 'Perempuan',
-                                ])
-                                }}
+                                ]) }}
                         </div><!--form-group-->
                     </div>
                     <div class="col">

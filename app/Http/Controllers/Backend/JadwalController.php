@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Jadwal;
+use App\Models\Mahasiswa;
 use App\Models\MataKuliah;
+use App\Repositories\Backend\AbsensiRepository;
 use App\Repositories\Backend\DosenRepository;
 use App\Repositories\Backend\JadwalRepository;
 use App\Repositories\Backend\MahasiswaRepository;
@@ -17,13 +19,15 @@ class JadwalController extends Controller
     protected $matkuls;
     protected $dosens;
     protected $mahasiswas;
+    protected $absensi;
 
-    public function __construct(JadwalRepository $jadwals, MataKuliahRepository $matkuls, DosenRepository $dosens, MahasiswaRepository $mahasiswas)
+    public function __construct(JadwalRepository $jadwals, MataKuliahRepository $matkuls, DosenRepository $dosens, MahasiswaRepository $mahasiswas, AbsensiRepository $absensi)
     {
         $this->jadwals = $jadwals;
         $this->matkuls = $matkuls;
         $this->dosens = $dosens;
         $this->mahasiswas = $mahasiswas;
+        $this->absensi = $absensi;
     }
 
     public function index()
@@ -97,9 +101,29 @@ class JadwalController extends Controller
         return view('backend.jadwal.mahasiswa', ['jadwal' => $jadwal, 'mahasiswa' => $this->mahasiswas->get()]);
     }
 
-    public function destroy(Jadwal $jadwals)
+    public function destroy(Jadwal $jadwal)
     {
-        $this->jadwals->deleteById($jadwals->id);
+        $this->jadwals->deleteById($jadwal->id);
         return;
+    }
+
+    public function absensi(Jadwal $jadwal)
+    {
+        $date = request()->get('date') ?: '';
+        $kelas = request()->get('kelas') ?: '';
+        $absensi = $this->absensi->getPresenceOnDate($jadwal->id, $date, $kelas);
+        $date_string = $date ? 'Tanggal : '.\Carbon\Carbon::createFromFormat('Y-m-d', $date)->format('d M Y') : 'Hari ini : '.\Carbon\Carbon::now()->format('d M Y');
+        $date = $date ? $date : \Carbon\Carbon::now()->format('Y-m-d');
+        return view('backend.jadwal.absensi.index', compact(['absensi', 'date_string', 'date', 'jadwal']));
+    }
+
+    public function absensiMhs(Jadwal $jadwal, Mahasiswa $mahasiswa)
+    {
+        
+    }
+
+    public function absensiMhsSave(Jadwal $jadwal, Mahasiswa $mahasiswa)
+    {
+        
     }
 }

@@ -54,24 +54,25 @@ Route::group(['prefix' => 'mata_kuliah'], function() {
   });
 });
 
-Route::group(['prefix' => 'jadwal'], function() {
-  Route::get('/', [JadwalController::class, 'index'])->name('jadwal.index');
-  Route::get('/create', [JadwalController::class, 'create'])->name('jadwal.create');
-  Route::post('/', [JadwalController::class, 'store'])->name('jadwal.store');
+Route::group(['prefix' => 'jadwal', 'as' => 'jadwal.'], function() {
+  Route::get('/', [JadwalController::class, 'index'])->name('index');
+  Route::get('/create', [JadwalController::class, 'create'])->name('create');
+  Route::post('/', [JadwalController::class, 'store'])->name('store');
 
   Route::group(['prefix' => '/{jadwal}'], function(){
-    Route::get('/', [JadwalController::class, 'show'])->name('jadwal.show');
-    Route::get('/edit', [JadwalController::class, 'edit'])->name('jadwal.edit');
-    Route::post('/', [JadwalController::class, 'update'])->name('jadwal.update');
-    Route::get('/mahasiswa', [JadwalController::class, 'mahasiswa'])->name('jadwal.mahasiswa');
-    Route::post('/mahasiswa', [JadwalController::class, 'mahasiswa'])->name('jadwal.mahasiswa');
-    Route::delete('/', [JadwalController::class, 'destroy'])->name('jadwal.delete');
-  });
-});
+    Route::group(['prefix' => 'absensi'], function() {
+      Route::get('/', [JadwalController::class, 'absensi'])->name('absensi.index');
+      Route::get('/{mahasiswa}', [JadwalController::class, 'absensiMhs'])->name('absensi.mhs');
+      Route::post('/{mahasiswa}/absen', [JadwalController::class, 'absensiMhsSave'])->name('absensi.mhs');
+    });
 
-Route::group(['prefix' => 'absensi'], function() {
-  Route::get('/', [AbsensiController::class, 'index'])->name('absensi.index');
-  Route::post('/absen/{mahasiswa}', [AbsensiController::class, 'absen'])->name('absensi.absen');
+    Route::get('/', [JadwalController::class, 'show'])->name('show');
+    Route::get('/edit', [JadwalController::class, 'edit'])->name('edit');
+    Route::post('/', [JadwalController::class, 'update'])->name('update');
+    Route::get('/mahasiswa', [JadwalController::class, 'mahasiswa'])->name('mahasiswa');
+    Route::post('/mahasiswa', [JadwalController::class, 'mahasiswa'])->name('mahasiswa');
+    Route::delete('/', [JadwalController::class, 'destroy'])->name('delete');
+  });
 });
 
 Route::group(['prefix' => 'rating'], function() {

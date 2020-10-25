@@ -53,7 +53,16 @@
                             text: 'Absensi sudah di input',
                             width: 300
                         })
-                        // console.log(response)
+                    },
+                    error: function(err) {
+                        Swal.fire({
+                            position: 'center',
+                            type: 'error',
+                            title: 'Terjadi Kesalahan',
+                            showConfirmButton: false,
+                            timer: 2000,
+                            width: 300
+                        })
                     }
                 })
             }

@@ -33,6 +33,14 @@ class Dosen extends Model
         return $this->hasMany(Jadwal::class, 'dosen_id');
     }
 
+    public function getJadwalTodayAttribute()
+    {
+        $day = (string) \Carbon\Carbon::now()->dayOfWeek;
+        return $this->jadwals->filter(function($d) use($day){
+            return (string) $d->day == $day;
+        });
+    }
+
     public function getActionsAttribute()
     {
         $show = route('admin.dosen.show', $this->id);

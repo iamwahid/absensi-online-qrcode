@@ -42,7 +42,7 @@
                                 }}
                         </div><!--form-group-->
                     </div>
-                    <div class="col-sm-12 col-lg-4">
+                    {{-- <div class="col-sm-12 col-lg-4">
                         <div class="form-group">
                             {{ html()->label("Ruang")->class('form-control-label')->for('room') }}
                             {{ html()->select('room')
@@ -56,7 +56,7 @@
                                 ->class('form-control')
                                 }}
                         </div><!--form-group-->
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="row">

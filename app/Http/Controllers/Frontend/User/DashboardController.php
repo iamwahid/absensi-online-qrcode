@@ -28,7 +28,7 @@ class DashboardController extends Controller
     public function scanAbsen()
     {   
         if (strtolower(request()->method()) == 'post') {
-            $decoded = base64_decode(request()->code);
+            $decoded = base64_decode(request()->code, true);
             if ($decoded) {
                 $decoded = explode('_', $decoded);
                 $jadwal = Jadwal::find($decoded[0]);
@@ -36,6 +36,7 @@ class DashboardController extends Controller
                 if ($jadwal && $mahasiswa) $this->absensi->setPresenceOnDate($jadwal, $mahasiswa, '', $decoded[2]);
                 return $decoded;
             }
+            abort(404);
         }
         return view('frontend.absensi.scan');
     }

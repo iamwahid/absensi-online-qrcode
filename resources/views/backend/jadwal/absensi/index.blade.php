@@ -11,18 +11,21 @@
                 <h4 class="card-title mb-0">
                     Absensi <small class="text-muted">{{$date_string}}</small>
                 </h4>
+                <small>{{$jadwal->as_text}}</small>
             </div><!--col-->
 
             <div class="col-sm-7">
                 <div class="float-right w-lg-50">
                     <div class="row">
                         <div class="col-6">
-                            {{-- <select name="kelas" id="kelas" class="form-control">
+                            <select name="kelas" id="kelas" class="form-control">
                                 <option value="" {{request()->get('kelas') == '' || request()->get('kelas') == null ? 'selected' : '' }}>Semua</option>
                                 <option value="A" {{request()->get('kelas') == 'A' ? 'selected' : '' }}>Kelas A</option>
                                 <option value="B" {{request()->get('kelas') == 'B' ? 'selected' : '' }}>Kelas B</option>
                                 <option value="C" {{request()->get('kelas') == 'C' ? 'selected' : '' }}>Kelas C</option>
-                            </select> --}}
+                                <option value="D" {{request()->get('kelas') == 'D' ? 'selected' : '' }}>Kelas D</option>
+                                <option value="E" {{request()->get('kelas') == 'E' ? 'selected' : '' }}>Kelas E</option>
+                            </select>
                         </div>
                         <div class="col-6">
                             <input name="date" id="date" type="date" value="{{request()->get('date') ?: $date}}" class="form-control">
@@ -39,8 +42,8 @@
                     <table class="table">
                         <thead>
                         <tr>
-                            <th>Santri</th>
-                            <th>Action</th>
+                            <th>Mahasiswa</th>
+                            {{-- <th>Action</th> --}}
                         </tr>
                         </thead>
                         <tbody>
@@ -49,26 +52,25 @@
                             <td>
                                 <div>
                                     <strong>
-                                        {{$k+1 . '. '.$b->mahasiswa->user->name}}
-                                    </strong>
-                                    @if ($b->keterangan)
-                                    <span class="badge float-right badge-sm badge-{{ $b->keterangan == 'hadir' ? 'success' : ($b->keterangan == 'izin' ? 'warning' : 'danger') }}">
-                                        {{strtoupper($b->keterangan) }}
-                                    </span>
-                                    @endif
+                                        {{$k+1 . '. '.$b->first_name.' '. $b->last_name}} 
+                                        @if ($b->keterangan != null)
+                                        <span class="badge float-right badge-sm badge-{{ $b->keterangan == 'hadir' ? 'success' : ($b->keterangan == 'izin' ? 'warning' : 'danger') }}">
+                                            {{strtoupper($b->keterangan) }}
+                                        </span>
+                                        @else
+                                        <small class="float-right">Tidak ada keterangan</small>
+                                        @endif
+                                    </strong><br>
+                                    NIM : {{$b->nim}} <br>
+                                    Kelas : {{$b->kelas}}
                                 </div>
-                                <p>
-                                    Kelas {{$b->kelas}}
-                                </p>
                             </td>
-                            
+{{--                             
                             <td>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-pill btn-success" onclick="absen('{{route('admin.absensi.absen', $b->mahasiswa_id)}}', 'hadir', '{{$date}}')">Hadir</button>
-                                    <button type="button" class="btn btn-sm btn-pill btn-danger" onclick="absen('{{route('admin.absensi.absen', $b->mahasiswa_id)}}', 'sakit', '{{$date}}')">Sakit</button>
-                                    <button type="button" class="btn btn-sm btn-pill btn-warning" onclick="absen('{{route('admin.absensi.absen', $b->mahasiswa_id)}}', 'izin', '{{$date}}')">Izin</button>
+                                    <a type="a" class="btn btn-sm btn-pill btn-success" href="{{ route('admin.jadwal.absensi.mhs', [$b->jadwal_id, $b->mahasiswa_id]) }}">Hadir</a>
                                 </div>
-                            </td>
+                            </td> --}}
                           </tr>
                           @endforeach
                         </tbody>
@@ -139,7 +141,7 @@ kelasselect.addEventListener('change', function(e){
 })
 
 function reloadData(date, kelas) {
-    window.location = '/admin/absensi?date='+date+'&kelas='+kelas
+    window.location = window.location.href.split('?')[0] + '?date='+date+'&kelas='+kelas
 }
 </script>
 @endpush

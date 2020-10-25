@@ -81,19 +81,9 @@ Breadcrumbs::for('admin.jadwal.mahasiswa', function ($trail, $jadwal) {
 });
 
 // absensi
-Breadcrumbs::for('admin.absensi.index', function ($trail) {
+Breadcrumbs::for('admin.jadwal.absensi.index', function ($trail, $jadwal) {
     $trail->parent('admin.dashboard');
-    $trail->push('Absensi', route('admin.absensi.index'));
-});
-
-Breadcrumbs::for('admin.absensi.create', function ($trail) {
-    $trail->parent('admin.absensi.index');
-    $trail->push('Tambah', route('admin.absensi.create'));
-});
-
-Breadcrumbs::for('admin.absensi.edit', function ($trail, $absensi) {
-    $trail->parent('admin.absensi.index');
-    $trail->push('Edit', route('admin.absensi.edit', $absensi));
+    $trail->push('Absensi', route('admin.jadwal.absensi.index', $jadwal));
 });
 
 // rating

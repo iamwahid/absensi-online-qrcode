@@ -11,7 +11,7 @@ class Jadwal extends Model
         'dosen_id',
         'start_at',
         'finish_at',
-        'room',
+        // 'room',
         'deskripsi',
         'kode_absen'
     ];
@@ -62,6 +62,7 @@ class Jadwal extends Model
         $edit = route('admin.jadwal.edit', $this->id);
         $delete = route('admin.jadwal.delete', $this->id);
         $mahasiswa = route('admin.jadwal.mahasiswa', $this->id);
+        $absensi = route('admin.jadwal.absensi.index', $this->id);
         $genqr = route('frontend.genqr', $this->qr_code->plain);
         $html = '';
         $html = '<div class="btn-group">'.
@@ -69,6 +70,7 @@ class Jadwal extends Model
         '<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"></button>'.
         '<ul class="dropdown-menu" role="menu">'.
         '<a href="'.$genqr.'" target="_blank" class="dropdown-item">QR link</a>'.
+        '<a href="'.$absensi.'" class="dropdown-item">Absensi</a>'.
         '<a href="'.$edit.'" class="dropdown-item">Edit</a>'.
         '<button type="button" onclick="deleteItem(\''.$delete.'\')" class="dropdown-item">Delete</button>'.
         '</ul></div>';
@@ -100,6 +102,12 @@ class Jadwal extends Model
     public function getStrigableAttribute()
     {
         $string = "[$this->matkul_id => $this->dosen_id] $this->room at $this->start_time - $this->finish_time";
+        return $string;
+    }
+
+    public function getAsTextAttribute()
+    {
+        $string = $this->matkul->nama .', '. $this->dosen->user->name .', '.$this->dayname.' '."$this->start_time - $this->finish_time";
         return $string;
     }
 

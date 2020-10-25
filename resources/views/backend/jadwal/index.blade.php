@@ -47,8 +47,9 @@
                                 <strong>{{$k+1 .'. '.$b->dayname.' '.$b->start_time.' - '. $b->finish_time}} </strong>
                                 <p class="mb-0">Mata Kuliah : {{$b->matkul->nama}}</p>
                                 <p class="mb-0">Dosen : {{$b->dosen->user->name}}</p>
-                                <p class="mb-0">Ruang : {{$b->room}}</p>
+                                {{-- <p class="mb-0">Ruang : {{$b->room}}</p> --}}
                                 <div class="mt-2 text-center">
+                                    <small>kode berubah setelah 5 menit</small>
                                     <p>{!!$b->qr_code->html!!}</p>
                                     <strong>{{$b->qr_code->plain}}</strong>
                                 </div>

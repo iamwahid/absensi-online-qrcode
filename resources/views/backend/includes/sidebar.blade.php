@@ -29,7 +29,7 @@
                         <a class="nav-link {{
                             active_class(Active::checkUriPattern('admin/mahasiswa'))
                         }}" href="{{ route('admin.mahasiswa.index') }}">
-                            <i class="nav-icon far fa-user"></i> Daftar Mahasiswa
+                            <i class="nav-icon far fa-user"></i> Semua Mahasiswa
                         </a>
                     </li>
                     @if ($logged_in_user->isAdmin())
@@ -59,7 +59,7 @@
                         <a class="nav-link {{
                             active_class(Active::checkUriPattern('admin/dosen'))
                         }}" href="{{ route('admin.dosen.index') }}">
-                            <i class="nav-icon far fa-user"></i> Daftar Dosen
+                            <i class="nav-icon far fa-user"></i> Semua Dosen
                         </a>
                     </li>
                     @if ($logged_in_user->isAdmin())
@@ -89,7 +89,7 @@
                         <a class="nav-link {{
                             active_class(Active::checkUriPattern('admin/mata_kuliah'))
                         }}" href="{{ route('admin.mata_kuliah.index') }}">
-                            <i class="nav-icon far fa-user"></i> Daftar Mata Kuliah
+                            <i class="nav-icon far fa-user"></i> Semua Mata Kuliah
                         </a>
                     </li>
                     @if ($logged_in_user->isAdmin())
@@ -120,7 +120,7 @@
                         <a class="nav-link {{
                             active_class(Active::checkUriPattern('admin/jadwal'))
                         }}" href="{{ route('admin.jadwal.index') }}">
-                            <i class="nav-icon far fa-user"></i> Daftar Jadwal
+                            <i class="nav-icon far fa-user"></i> Semua Jadwal
                         </a>
                     </li>
                     @if ($logged_in_user->isAdmin())
@@ -133,16 +133,6 @@
                     </li>
                     @endif
                 </ul>
-            </li>
-
-            {{-- absensi  --}}
-            <li class="nav-item">
-                <a class="nav-link {{
-                    active_class(Active::checkUriPattern('admin/absensi'))
-                }}" href="{{ route('admin.absensi.index') }}">
-                    <i class="nav-icon far fa-user"></i>
-                    Absensi
-                </a>
             </li>
 
             <li class="nav-title">

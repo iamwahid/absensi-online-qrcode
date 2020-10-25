@@ -22,21 +22,21 @@ class AbsensiRepository extends BaseRepository
         return Absensi::class;
     }
 
-    public function getPresenceOnDate($jadwal_id, $date = '', $mhs_tahun = '')
+    public function getPresenceOnDate($jadwal_id, $date = '', $kelas = '')
     {
         $date = $date ?: now()->toDateString();
         $absens = DB::select("SELECT absensi.id, absensi.keterangan, absensi.created_at,
                 mahasiswas.id as mahasiswa_id, mahasiswas.nim, users.first_name, users.last_name, mahasiswas.tahun, 
                 mahasiswas.kelas, mahasiswas.gender, 
                 matkuls.nama, 
-                jadwals.start_at, jadwals.finish_at
+                jadwals.id as jadwal_id, jadwals.start_at, jadwals.finish_at
                 FROM (SELECT * FROM absensi WHERE created_at BETWEEN '$date 00:00:00' AND '$date 23:59:00') AS absensi 
                 RIGHT OUTER JOIN mahasiswas ON mahasiswas.id = absensi.mahasiswa_id
                 LEFT JOIN users ON users.id = mahasiswas.user_id
                 LEFT JOIN mahasiswa_has_jadwals ON mahasiswas.id = mahasiswa_has_jadwals.mahasiswa_id
                 LEFT JOIN jadwals ON mahasiswa_has_jadwals.jadwal_id = jadwals.id
                 LEFT JOIN matkuls ON jadwals.matkul_id = matkuls.id
-                WHERE jadwals.id = $jadwal_id AND mahasiswas.tahun LIKE '%$mhs_tahun%'
+                WHERE jadwals.id = $jadwal_id AND mahasiswas.kelas LIKE '%$kelas%'
                 ORDER BY mahasiswa_id
                 ");
         return $absens;

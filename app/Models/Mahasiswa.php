@@ -38,6 +38,14 @@ class Mahasiswa extends Model
     return $this->belongsToMany(Jadwal::class, 'mahasiswa_has_jadwals', 'mahasiswa_id', 'jadwal_id');
   }
 
+  public function getJadwalTodayAttribute()
+  {
+    $day = (string) \Carbon\Carbon::now()->dayOfWeek;
+    return $this->jadwals->filter(function($d) use($day){
+      return (string) $d->day == $day;
+    });
+  }
+
   public function scopeBulan($query, $bulan = 1)
   {
       return $query->where('created_at', now());

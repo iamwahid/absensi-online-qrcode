@@ -45,21 +45,18 @@
                                 </div>
                             </div>
 
-                            {{-- <div class="card mb-4">
-                                <div class="card-header">Header</div>
-                                <div class="card-body">
-                                    <h4 class="card-title">Info card title</h4>
-                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                </div>
-                            </div><!--card--> --}}
                         </div><!--col-md-4-->
 
                         <div class="col-md-8 order-2 order-sm-1">
                             <div class="row">
                                 <div class="col">
+                                    @if (!$logged_in_user->isAdmin())
                                     <div class="card mb-4">
                                         <div class="card-header">
-                                            Selamat datang!
+                                            {{ request()->show && request()->show == 'all' ? 'Semua Jadwal' : 'Jadwal Hari ini' }}
+                                            @if (!request()->show || request()->show != 'all')
+                                                <a class="btn btn-sm btn-primary float-right" href="?show=all">Tampilkan Semua Jadwal</a>
+                                            @endif
                                         </div><!--card-header-->
 
                                         <div class="card-body">
@@ -74,16 +71,56 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($logged_in_user->mahasiswa->jadwals as $i => $jadwal)
+                                                        @if (request()->show && request()->show == 'all')
+                                                        @php
+                                                            $jadwals = $logged_in_user->mahasiswa->jadwals;
+                                                        @endphp
+                                                        @else
+                                                        @php
+                                                            $jadwals = $logged_in_user->mahasiswa->jadwal_today;
+                                                        @endphp
+                                                        @endif
+                                                        @foreach ($jadwals as $i => $jadwal)
                                                         <tr>
                                                             <td>{{$i+1}}</td>
                                                             <td>
                                                                 <p>Matkul : {{$jadwal->matkul->nama}}</p>
                                                                 <p>Dosen : {{$jadwal->dosen->user->name}}</p>
-                                                                <p>Waktu : {{$jadwal->start_time .' - '. $jadwal->finish_time}}</p>
+                                                                <p>Waktu : {{$jadwal->dayname.', '.$jadwal->start_time .' - '. $jadwal->finish_time}}</p>
                                                             </td>
                                                             <td>
                                                                 <a href="{{route('frontend.scan')}}" class="btn btn-success">Absen</a>
+                                                            </td>
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            @elseif ($logged_in_user->dosen && $logged_in_user->dosen->jadwals)
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Jadwal</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (request()->show && request()->show == 'all')
+                                                        @php
+                                                            $jadwals = $logged_in_user->dosen->jadwals;
+                                                        @endphp
+                                                        @else
+                                                        @php
+                                                            $jadwals = $logged_in_user->dosen->jadwal_today;
+                                                        @endphp
+                                                        @endif
+                                                        @foreach ($jadwals as $i => $jadwal)
+                                                        <tr>
+                                                            <td>{{$i+1}}</td>
+                                                            <td>
+                                                                <p>Matkul : {{$jadwal->matkul->nama}}</p>
+                                                                <p>Waktu : {{$jadwal->dayname.', '.$jadwal->start_time .' - '. $jadwal->finish_time}}</p>
                                                             </td>
                                                         </tr>
                                                         @endforeach
@@ -95,6 +132,7 @@
                                             @endif
                                         </div><!--card-body-->
                                     </div><!--card-->
+                                    @endif
                                 </div><!--col-md-6-->
                             </div><!--row-->
                         </div><!--col-md-8-->
