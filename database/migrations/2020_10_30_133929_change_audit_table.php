@@ -14,8 +14,8 @@ class ChangeAuditTable extends Migration
     public function up()
     {
         Schema::table('audits', function (Blueprint $table) {
-            $table->text('user_type')->nullable()->change();
-            $table->text('event')->change();
+            // $table->text('user_type')->nullable()->change();
+            // $table->text('event')->change();
             $table->text('user_agent')->nullable()->change();
             $table->text('tags')->nullable()->change();
         });
