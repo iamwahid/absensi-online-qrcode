@@ -17,7 +17,7 @@
             <div class="col-sm-7">
                 <div class="float-right w-lg-50">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-4">
                             <select name="kelas" id="kelas" class="form-control">
                                 <option value="" {{request()->get('kelas') == '' || request()->get('kelas') == null ? 'selected' : '' }}>Semua</option>
                                 <option value="A" {{request()->get('kelas') == 'A' ? 'selected' : '' }}>Kelas A</option>
@@ -27,8 +27,11 @@
                                 <option value="E" {{request()->get('kelas') == 'E' ? 'selected' : '' }}>Kelas E</option>
                             </select>
                         </div>
-                        <div class="col-6">
+                        <div class="col-4">
                             <input name="date" id="date" type="date" value="{{request()->get('date') ?: $date}}" class="form-control">
+                        </div>
+                        <div class="col-4">
+                            <a href="{{route('admin.jadwal.absensi.export', $jadwal).'?kelas='.request('kelas')}}" class="btn btn-success">Export</a>
                         </div>
                     </div>
                 </div>
@@ -52,7 +55,7 @@
                             <td>
                                 <div>
                                     <strong>
-                                        {{$k+1 . '. '.$b->first_name.' '. $b->last_name}} 
+                                        {{$k+1 . '. '.$b->mahasiswa_nama}} 
                                         @if ($b->keterangan != null)
                                         <span class="badge float-right badge-sm badge-{{ $b->keterangan == 'hadir' ? 'success' : ($b->keterangan == 'izin' ? 'warning' : 'danger') }}">
                                             {{strtoupper($b->keterangan) }}

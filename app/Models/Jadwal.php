@@ -63,11 +63,12 @@ class Jadwal extends Model
 
     public function getActionsAttribute()
     {
-        $show = route('admin.jadwal.show', $this->id);
-        $edit = route('admin.jadwal.edit', $this->id);
-        $delete = route('admin.jadwal.delete', $this->id);
-        $mahasiswa = route('admin.jadwal.mahasiswa', $this->id);
-        $absensi = route('admin.jadwal.absensi.index', $this->id);
+        $show = route('admin.jadwal.show', $this);
+        $edit = route('admin.jadwal.edit', $this);
+        $delete = route('admin.jadwal.delete', $this);
+        $mahasiswa = route('admin.jadwal.mahasiswa', $this);
+        $absensi = route('admin.jadwal.absensi.index', $this);
+        $export = route('admin.jadwal.absensi.export', $this);
         $genqr = route('frontend.genqr', $this->qr_code->plain);
         $html = '';
         $html = '<div class="btn-group">'.
@@ -76,29 +77,38 @@ class Jadwal extends Model
         '<ul class="dropdown-menu" role="menu">'.
         '<a href="'.$genqr.'" target="_blank" class="dropdown-item">QR link</a>'.
         '<a href="'.$mahasiswa.'" class="dropdown-item">Atur Mahasiswa</a>'.
+        '<a href="'.$export.'" class="dropdown-item">Export Absensi</a>'.
         '<a href="'.$edit.'" class="dropdown-item">Edit</a>'.
         '<button type="button" onclick="deleteItem(\''.$delete.'\')" class="dropdown-item">Delete</button>'.
         '</ul></div>';
 
         if (!auth()->user()->isAdmin()) {
-            $html = '<a href="'.$genqr.'" target="_blank" class="btn btn-sm btn-primary">QR Link</a>';
+            $html = '<div class="btn-group">'.
+            '<a href="'.$absensi.'" class="btn btn-sm btn-primary">Absensi</a>'.
+            '<button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown"></button>'.
+            '<ul class="dropdown-menu" role="menu">'.
+            '<a href="'.$genqr.'" target="_blank" class="dropdown-item">QR link</a>'.
+            '<a href="'.$export.'" class="dropdown-item">Export Absensi</a>'.
+            '</ul></div>';
         }
 
         return $html;
     }
 
-    public function isAvailable(\Carbon\Carbon $date = null) : bool
+    public function isAvailable(\Carbon\Carbon $date = null)
     {
         $date = $date ? $date : \Carbon\Carbon::now();
-        if ($this->day != $date->formatLocalized('%w')) return false;// %A %a for day name
+        if ($this->day != $date->formatLocalized('%w')) return -2;// %A %a for day name
         $jadwaltime = [\Carbon\Carbon::createFromFormat("H:i", $this->start_time), \Carbon\Carbon::createFromFormat("H:i", $this->finish_time)];
-        if (!($jadwaltime[0] < $date && $jadwaltime[1] > $date)) return false;
-        return true;
+        // if (!($jadwaltime[0] < $date && $jadwaltime[1] > $date)) return false;
+        if ($jadwaltime[0] > $date) return -1;
+        if ($jadwaltime[1] < $date) return 1;
+        return 0;
     }
 
     public function generateKode()
     {
-        if ($this->isAvailable()) {
+        if ($this->isAvailable() === 0) {
             $this->attributes['kode_absen'] = \Str::random(10);
             $this->save();
         }

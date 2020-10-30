@@ -62,6 +62,7 @@ Route::group(['prefix' => 'jadwal', 'as' => 'jadwal.'], function() {
   Route::group(['prefix' => '/{jadwal}'], function(){
     Route::group(['prefix' => 'absensi'], function() {
       Route::get('/', [JadwalController::class, 'absensi'])->name('absensi.index');
+      Route::get('/export', [JadwalController::class, 'export'])->name('absensi.export');
       Route::get('/{mahasiswa}', [JadwalController::class, 'absensiMhs'])->name('absensi.mhs');
       Route::post('/{mahasiswa}/absen', [JadwalController::class, 'absensiMhsSave'])->name('absensi.mhs');
     });

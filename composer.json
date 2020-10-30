@@ -23,6 +23,7 @@
         "laravel/passport": "7.4",
         "laravel/socialite": "^4.1",
         "laravel/tinker": "^1.0",
+        "maatwebsite/excel": "^3.1",
         "milon/barcode": "6.*",
         "owen-it/laravel-auditing": "^9.0",
         "predis/predis": "^1.1",

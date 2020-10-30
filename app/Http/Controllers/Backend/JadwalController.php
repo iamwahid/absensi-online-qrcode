@@ -126,4 +126,10 @@ class JadwalController extends Controller
     {
         
     }
+
+    public function export(Request $request, Jadwal $jadwal)
+    {   
+        $kelas = request()->get('kelas') ?: '';
+        return $this->absensi->exportExcel($jadwal, $kelas);
+    }
 }
