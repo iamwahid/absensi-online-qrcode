@@ -7,6 +7,7 @@ use App\Models\Dosen;
 use App\Repositories\Backend\Auth\UserRepository;
 use App\Repositories\Backend\DosenRepository;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class DosenController extends Controller
 {
@@ -34,7 +35,7 @@ class DosenController extends Controller
     {
         $duser = $request->validate([
             'name' => ['required'],
-            'email' => ['required'],
+            'email' => ['required', Rule::unique('users')],
             'password' => ['required','confirmed'],
         ]);
 

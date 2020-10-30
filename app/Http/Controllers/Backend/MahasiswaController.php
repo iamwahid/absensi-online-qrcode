@@ -8,6 +8,7 @@ use App\Repositories\Backend\AbsensiRepository;
 use App\Repositories\Backend\Auth\UserRepository;
 use App\Repositories\Backend\MahasiswaRepository;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class MahasiswaController extends Controller
 {
@@ -38,7 +39,7 @@ class MahasiswaController extends Controller
     {
         $duser = $request->validate([
             'name' => ['required'],
-            'email' => ['required'],
+            'email' => ['required', Rule::unique('users')],
             'password' => ['required','confirmed'],
         ]);
 
