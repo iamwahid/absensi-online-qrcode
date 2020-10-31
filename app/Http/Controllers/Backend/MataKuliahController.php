@@ -46,9 +46,9 @@ class MataKuliahController extends Controller
     {
         if (strtolower($request->method()) == 'post') {
             $data = $request->validate([
-                'dosen' => 'required'
+                'dosen' => 'nullable'
             ]);
-            $this->mata_kuliah->giveMatkulToDosens($data['dosen'], $mata_kuliah);
+            $this->mata_kuliah->giveMatkulToDosens($data['dosen'] ?? [], $mata_kuliah);
         }
         $dosen = $this->dosens->get();
         return view('backend.mata_kuliah.dosen', ['mata_kuliah' => $mata_kuliah, 'dosen' => $dosen]);

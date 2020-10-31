@@ -24,7 +24,7 @@
                             <thead>
                                 <tr>
                                     <th>Dosen</th>
-                                    <th>Action</th>
+                                    <th>Pilih</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -23,7 +23,7 @@
                             <thead>
                                 <tr>
                                     <th>Mahasiswa</th>
-                                    <th>Action</th>
+                                    <th>Pilih</th>
                                 </tr>
                             </thead>
                             <tbody>

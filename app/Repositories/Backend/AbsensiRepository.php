@@ -141,7 +141,7 @@ class AbsensiRepository extends BaseRepository
         if ($jadwal->kode_absen != $kode) return;
 
         $date = $date ? Carbon::createFromFormat('Y-m-d', $date) : Carbon::now();
-        if (in_array((int) $date->formatLocalized('%w'), [0, 6])) return;
+        // if (in_array((int) $date->formatLocalized('%w'), [0, 6])) return;
 
         $isAvail = $jadwal->isAvailable($date);
         if ($isAvail === 0) {

@@ -23,10 +23,10 @@
                     <div class="col-sm-12 col-lg-4">
                         <div class="form-group">
                             {{ html()->label("Mata Kuliah")->class('form-control-label')->for('matkul_id') }}
-                            <select name="matkul_id" id="matkul_id" class="form-control" data-url="{{route('admin.mata_kuliah.index')}}">
+                            <select name="matkul_id" id="matkul_id" class="form-control" data-url="{{route('admin.mata_kuliah.index')}}" required>
                                 <option value="">Pilih</option>
                                 @foreach ($matkul as $m)
-                                <option value="{{$m->id.'_'.$m->sks}}">{{$m->nama}}</option>
+                                <option value="{{$m->id.'_'.$m->sks}}">{{$m->nama.' ('.$m->sks.' SKS)'}}</option>
                                 @endforeach
                             </select>
                         </div><!--form-group-->
@@ -38,7 +38,7 @@
                                 ->options([
                                     '' => 'Pilih'
                                 ])
-                                ->class('form-control')
+                                ->class('form-control')->required()
                                 }}
                         </div><!--form-group-->
                     </div>
@@ -67,13 +67,13 @@
                             {{ html()->select('day')
                                 ->options([
                                     '' => 'Pilih',
-                                    // '0' => 'Ahad',
+                                    '0' => 'Ahad',
                                     '1' => 'Senin',
                                     '2' => 'Selasa',
                                     '3' => 'Rabu',
                                     '4' => 'Kamis',
                                     '5' => 'Jum\'at',
-                                    // '6' => 'Sabtu',
+                                    '6' => 'Sabtu',
                                 ])
                                 ->class('form-control')
                                 ->required()
@@ -93,7 +93,7 @@
                     </div><!--col-->
                     <div class="col-sm-12 col-lg-4">
                         <div class="form-group">
-                            {{ html()->label("Waktu Selesai")->class('form-control-label')->for('finish_time') }}
+                            {{ html()->label("Waktu Selesai")->class('form-control-label')->for('finish_time') }} <small class="text-muted">(dihitung dari banyak SKS)</small>
                             <input type="hidden" name="finish_at" id="finish_at">
                             {{ html()->text('finish_time')
                                 ->attribute('type', 'time')

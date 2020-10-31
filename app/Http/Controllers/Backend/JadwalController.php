@@ -93,12 +93,12 @@ class JadwalController extends Controller
     {
         if (strtolower($request->method()) == 'post') {
             $data = $request->validate([
-                'mahasiswa' => 'required'
+                'mahasiswa' => 'nullable'
             ]);
-            $jadwal->mahasiswas()->sync($data['mahasiswa']);
+            $jadwal->mahasiswas()->sync($data['mahasiswa'] ?? []);
         }
-
-        return view('backend.jadwal.mahasiswa', ['jadwal' => $jadwal, 'mahasiswa' => $this->mahasiswas->orderBy('kelas')->get()]);
+        $mahasiswa = $this->mahasiswas->filterByMatkul($jadwal, $jadwal->matkul_id);
+        return view('backend.jadwal.mahasiswa', compact(['jadwal', 'mahasiswa']));
     }
 
     public function destroy(Jadwal $jadwal)
