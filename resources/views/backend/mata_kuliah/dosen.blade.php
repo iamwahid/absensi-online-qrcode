@@ -31,7 +31,7 @@
                                 @foreach ($dosen as $k => $d)
                                 <tr>
                                     <td>
-                                        <strong>{{$k+1 .'. '.$d->user->name}} </strong>
+                                        <strong>{{$k+1 .'. '.$d->user->name.' ('.$d->matkuls->count().' Mata Kuliah)'}} </strong>
                                         {{-- <p class="mb-0">SKS : {{$b->sks}}</p> --}}
                                     </td>
                                     <td>

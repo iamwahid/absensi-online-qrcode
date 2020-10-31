@@ -36,13 +36,21 @@ class UserTableSeeder extends Seeder
             'confirmed' => true,
         ]);
 
-        User::create([
+        $mhs = User::create([
             'first_name' => 'Mas',
             'last_name' => 'Budi',
             'email' => 'masbudi@online.com',
             'password' => 'secret',
             'confirmation_code' => md5(uniqid(mt_rand(), true)),
             'confirmed' => true,
+        ]);
+
+        $mhs->mahasiswa()->create([
+            'nim' => 123456,
+            'tahun' => 2020,
+            'kelas' => 'A',
+            'gender' => 'male',
+            'alamat' => 'Desa'
         ]);
 
         $this->enableForeignKeys();

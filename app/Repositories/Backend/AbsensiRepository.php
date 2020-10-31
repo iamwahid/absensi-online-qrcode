@@ -144,7 +144,6 @@ class AbsensiRepository extends BaseRepository
         if (in_array((int) $date->formatLocalized('%w'), [0, 6])) return;
 
         $isAvail = $jadwal->isAvailable($date);
-        $keterangan = '';
         if ($isAvail === 0) {
             $keterangan = 'hadir';
         } else if ($isAvail > 0) {

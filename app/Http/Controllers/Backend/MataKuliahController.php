@@ -48,7 +48,6 @@ class MataKuliahController extends Controller
             $data = $request->validate([
                 'dosen' => 'required'
             ]);
-            // dd($data);
             $this->mata_kuliah->giveMatkulToDosens($data['dosen'], $mata_kuliah);
         }
         $dosen = $this->dosens->get();

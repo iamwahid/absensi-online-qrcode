@@ -34,7 +34,7 @@ class DashboardController extends Controller
                 $jadwal = Jadwal::find($decoded[0]);
                 $mahasiswa = auth()->user()->mahasiswa;
                 if ($jadwal && $mahasiswa) $this->absensi->setPresenceOnDate($jadwal, $mahasiswa, '', $decoded[2]);
-                return $decoded;
+                return 'success';
             }
             abort(404);
         }

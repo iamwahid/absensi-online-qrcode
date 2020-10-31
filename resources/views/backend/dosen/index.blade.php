@@ -45,6 +45,7 @@
                           <tr>
                             <td>
                                 <strong>{{$k+1 .'. '.$b->user->name}} </strong>
+                                <p class="mb-0">e-mail : {{$b->user->email}}</p>
                                 <p class="mb-0">NIK : {{$b->nik}}</p>
                                 <p class="mb-0">No HP : {{$b->no_hp}}</p>
                                 <p class="mb-0">Alamat : {{$b->alamat }}</p>

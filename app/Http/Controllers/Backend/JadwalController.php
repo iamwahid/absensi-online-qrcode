@@ -98,7 +98,7 @@ class JadwalController extends Controller
             $jadwal->mahasiswas()->sync($data['mahasiswa']);
         }
 
-        return view('backend.jadwal.mahasiswa', ['jadwal' => $jadwal, 'mahasiswa' => $this->mahasiswas->get()]);
+        return view('backend.jadwal.mahasiswa', ['jadwal' => $jadwal, 'mahasiswa' => $this->mahasiswas->orderBy('kelas')->get()]);
     }
 
     public function destroy(Jadwal $jadwal)
