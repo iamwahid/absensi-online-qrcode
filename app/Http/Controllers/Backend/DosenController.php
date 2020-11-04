@@ -78,6 +78,7 @@ class DosenController extends Controller
 
     public function destroy(Dosen $dosen)
     {
+        $this->user->deleteById($dosen->user->id);
         $this->dosen->deleteById($dosen->id);
         return;
     }

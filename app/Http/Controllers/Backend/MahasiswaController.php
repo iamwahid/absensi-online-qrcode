@@ -90,6 +90,7 @@ class MahasiswaController extends Controller
     public function destroy(Mahasiswa $mahasiswa)
     {
         $this->user->deleteById($mahasiswa->user->id);
+        $this->mahasiswa->deleteById($mahasiswa->id);
         return;
     }
 
