@@ -83,12 +83,12 @@ class AbsensiRepository extends BaseRepository
             $start = $added->startOfDay()->format('Y-m-d H:i:s');
             $end = $added->endOfDay()->format('Y-m-d H:i:s');
             if ($i>0) $whereBetweens .= " UNION ALL ";
-            $whereBetweens .= "SELECT absensi.id, absensi.keterangan, absensi.created_at,
+            $whereBetweens .= "SELECT absensi.id, absensi.keterangan, IFNULL(absensi.created_at, '$start') AS created_at,
             mahasiswas.id as mahasiswa_id, mahasiswas.nim, CONCAT(users.first_name, ' ', users.last_name) as nama_mahasiswa,
             mahasiswas.tahun, mahasiswas.kelas, mahasiswas.gender, 
             matkuls.nama as mata_kuliah, 
             jadwals.start_at, jadwals.finish_at
-            FROM (SELECT * FROM absensi WHERE created_at BETWEEN '$start' AND '$end' AND jadwal_id = $jadwal_id) AS absensi 
+            FROM (SELECT id, mahasiswa_id, jadwal_id, keterangan, created_at FROM absensi WHERE created_at BETWEEN '$start' AND '$end' AND jadwal_id = $jadwal_id) AS absensi 
             RIGHT OUTER JOIN mahasiswas ON mahasiswas.id = absensi.mahasiswa_id
             LEFT JOIN users ON users.id = mahasiswas.user_id
             LEFT JOIN mahasiswa_has_jadwals ON mahasiswas.id = mahasiswa_has_jadwals.mahasiswa_id
@@ -97,9 +97,15 @@ class AbsensiRepository extends BaseRepository
             WHERE jadwals.id = $jadwal_id AND mahasiswas.kelas LIKE '%$kelas%'";
         }
 
-        $whereBetweens .= " ORDER BY mahasiswa_id";
+        $whereBetweens .= " ORDER BY mahasiswa_id, created_at";
 
         $absensi_jadwal = DB::select($whereBetweens);
+        $heading = [
+            'NIM',
+            'Nama Mahasiswa',
+            'Mata Kuliah',
+            'Waktu',
+        ];
 
         $absensi_grouped = [];
         $hari = 1;
@@ -112,12 +118,15 @@ class AbsensiRepository extends BaseRepository
             }
 
             if ($hari === 1) {
-                $absensi_grouped[$idx]['mahasiswa_id'] = $row->mahasiswa_id;
                 $absensi_grouped[$idx]['nim'] = $row->nim;
                 $absensi_grouped[$idx]['nama_mahasiswa'] = $row->nama_mahasiswa;
                 $absensi_grouped[$idx]['mata_kuliah'] = $row->mata_kuliah;
-                $absensi_grouped[$idx]['start_at'] = $row->start_at;
-                $absensi_grouped[$idx]['finish_at'] = $row->finish_at;
+                $absensi_grouped[$idx]['waktu'] = dayname(explode(' ', $row->start_at)[0]).', '.explode(' ', $row->start_at)[1].' - '.explode(' ', $row->finish_at)[1];
+            }
+            
+            $created = Carbon::createFromFormat('Y-m-d H:i:s', $row->created_at)->format('d-m-Y');
+            if ($idx == 1) {
+                $heading[] = 'P '.$hari.' ('.$created.')';
             }
 
             $absensi_grouped[$idx]['p_'.$hari] = $row->keterangan;
@@ -125,14 +134,17 @@ class AbsensiRepository extends BaseRepository
             $prev_id = $row->mahasiswa_id;
         }
 
-        return collect($absensi_grouped);
+        return collect([
+            'heading' => $heading,
+            'data' => $absensi_grouped
+        ]);
 
     }
 
     public function exportExcel($jadwal, $kelas='')
     {
         $matkul = $jadwal->matkul->nama;
-        return Excel::download(new AbsensiExport($this->absensiData($jadwal->id, $kelas), $this->total_pertemuan), 'Data Absensi-'.$matkul.'-'.\Carbon\Carbon::now()->format('d-m-Y').'.xlsx');
+        return Excel::download(new AbsensiExport($this->absensiData($jadwal->id, $kelas)), 'Data Absensi-'.$matkul.'-'.\Carbon\Carbon::now()->format('d-m-Y').'.xlsx');
     }
 
     public function setPresenceOnDate(Jadwal $jadwal, Mahasiswa $mahasiswa, $keterangan, $kode, $date = '')
